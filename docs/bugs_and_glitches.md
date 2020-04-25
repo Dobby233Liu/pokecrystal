@@ -15,7 +15,6 @@ Some fixes are mentioned as breaking compatibility with link battles. This can b
 
 ## Contents
 
-- [Counter and Mirror Coat still work if the opponent uses an item](#counter-and-mirror-coat-still-work-if-the-opponent-uses-an-item)
 - [A Disabled but PP Up–enhanced move may not trigger Struggle](#a-disabled-but-pp-upenhanced-move-may-not-trigger-struggle)
 - [A Pokémon that fainted from Pursuit will have its old status condition when revived](#a-pokémon-that-fainted-from-pursuit-will-have-its-old-status-condition-when-revived)
 - [Lock-On and Mind Reader don't always bypass Fly and Dig](#lock-on-and-mind-reader-dont-always-bypass-fly-and-dig)
@@ -70,34 +69,6 @@ Some fixes are mentioned as breaking compatibility with link battles. This can b
 - [`ReadObjectEvents` overflows into `wObjectMasks`](#readobjectevents-overflows-into-wobjectmasks)
 - [`ClearWRAM` only clears WRAM bank 1](#clearwram-only-clears-wram-bank-1)
 - [`BattleAnimCmd_ClearObjs` only clears the first 6⅔ objects](#battleanimcmd_clearobjs-only-clears-the-first-6-objects)
-
-
-## Counter and Mirror Coat still work if the opponent uses an item
-
-*Fixing this bug will break compatibility with standard Pokémon Crystal for link battles.*
-
-([Video](https://www.youtube.com/watch?v=uRYyzKRatFk))
-
-**Fix:** Edit `BattleCommand_Counter` in [engine/battle/move_effects/counter.asm](https://github.com/pret/pokecrystal/blob/master/engine/battle/move_effects/counter.asm) and `BattleCommand_MirrorCoat` in [engine/battle/move_effects/mirror_coat.asm](https://github.com/pret/pokecrystal/blob/master/engine/battle/move_effects/mirror_coat.asm):
-
-```diff
--	; BUG: Move should fail with all non-damaging battle actions
- 	ld hl, wCurDamage
- 	ld a, [hli]
- 	or [hl]
--	ret z
-+	jr z, .failed
-```
-
-Add this to the end of each file:
-
-```diff
-+.failed
-+	ld a, 1
-+	ld [wEffectFailed], a
-+	and a
-+	ret
-```
 
 
 ## A Disabled but PP Up–enhanced move may not trigger Struggle

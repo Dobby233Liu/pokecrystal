@@ -389,7 +389,7 @@ Function39990:
 	ret
 
 INCLUDE "data/trainers/parties.asm"
-+
+; i indeed shot, thanks for the notify
 SetTrainerBattleLevel:
 	ld a, 255
 	ld [wCurPartyLevel], a

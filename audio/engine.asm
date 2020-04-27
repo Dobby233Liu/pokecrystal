@@ -1428,7 +1428,7 @@ Music_Ret:
 ; called when $ff is encountered w/ subroutine flag set
 ; end music stream
 ; return to caller of the subroutine
-	; reset subroutine flag
+	; reset subroutine flag, pokeball fix unnesscary?
 	ld hl, CHANNEL_FLAGS1
 	add hl, bc
 	res SOUND_SUBROUTINE, [hl]
